@@ -2,7 +2,7 @@ document.getElementById("crearReglas").addEventListener("click", crearReglas);
 
 function crear_reglas(arbol, regla){
   if (arbol.childs.length == 0) {
-    var newRegla = regla.concat("THEN 'ANSWER' = " + arbol.answer + ";,");
+    var newRegla = regla.concat("THEN 'DECISION' = " + arbol.answer + ";,");
     console.log(newRegla);
     reglas = reglas.concat(newRegla);
   } else {
