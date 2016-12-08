@@ -28,8 +28,9 @@ function crear_arbol(){
 		}
 		http_request.onreadystatechange = function (){
 			if((http_request.readyState == 4) && (http_request.status == 200)){
-				 var arbol = JSON.parse(http_request.responseText);
-				 formar_arbol(arbol);
+				 var datos = JSON.parse(http_request.responseText);
+				 console.log('Datos',datos);
+				 formar_arbol(datos);
 			}
 		}
 		http_request.open("POST", "php/crear_arbol.php", true);
@@ -56,16 +57,21 @@ function crear_arbol(){
 function formar_arbol(datos){
 	var tree = {
 		"root": "",
-		"childs": []
+		"childs": [],
+		"top": true
 	}
 
+	// SI ALGO LA CAGA ES ESTO:
 	agregarMaxGanancia(tree, datos);
-	agregarMaxGanancia(tree.childs[obtenerSiguienteMaximo(tree)], datos);
-	agregarMaxGanancia(tree.childs[obtenerSiguienteMaximo(tree)], datos);
+	while (datos.length > 2 ) {
+		agregarMaxGanancia(tree.childs[obtenerSiguienteMaximo(tree)], datos);
+	}
 
 	// console.log("Datos", datos);
 
 	console.log("Arbol", tree);
+
+	window.arbol = tree;
 }
 
 function agregarMaxGanancia(tree, datos){
@@ -87,9 +93,7 @@ function obtenerSiguienteMaximo(tree){
 	var indexMax = 0;
 	tree.childs.forEach(function(item, index){
 		if(item.childs.length == 0){
-			if(item.entropia == 0) {
-				item.childs.push("true");
-			} else if(item.entropia > indexMax) {
+			if(item.entropia > indexMax) {
 				indexMax = index;
 			}
 		}

@@ -1,8 +1,8 @@
-document.getElementById("crearReglas").addEventListener("click", demoCrearReglas);
+document.getElementById("crearReglas").addEventListener("click", crearReglas);
 
 function crear_reglas(arbol, regla){
   if (arbol.childs.length == 0) {
-    var newRegla = regla.concat("THEN " + arbol.class + " = " + arbol.value + ";,");
+    var newRegla = regla.concat("THEN 'ANSWER' = " + arbol.answer + ";,");
     console.log(newRegla);
     reglas = reglas.concat(newRegla);
   } else {
@@ -20,64 +20,8 @@ function crear_reglas(arbol, regla){
   }
 }
 
-function demoCrearReglas() {
-  var arbolClima = {
-    "top": true,
-    "root":"general",
-    "childs":[
-      {
-        "atributo":"asoleado",
-        "entropia":0.970950594455,
-        "childs":[
-          {
-            "atributo":"no",
-            "entropia":0.811278124459,
-            "childs":[],
-            "class": "play",
-            "value": true
-          },
-          {
-            "atributo":"si",
-            "entropia":1,
-            "childs":[],
-            "class": "play",
-            "value": false
-          }
-        ],
-        "root":"viento"
-      },
-      {
-        "atributo":"nublado",
-        "entropia":0,
-        "childs":[],
-        "class": "play",
-        "value": true
-      },
-      {
-        "atributo":"lluvioso",
-        "entropia":0.970950594455,
-        "childs":[
-          {
-            "atributo":"alta",
-            "entropia":0.985228136034,
-            "childs":[],
-            "class": "play",
-            "value": false
-          },
-          {
-            "atributo":"normal",
-            "entropia":0.591672778582,
-            "childs":[],
-            "class": "play",
-            "value": true
-          }
-        ],
-        "root":"humedad"
-      }
-    ]
-  }
-
-  crear_reglas(arbolClima, "");
+function crearReglas() {
+  crear_reglas(window.arbol, "");
   alert(reglas.replace(/,/g, "\n"));
 }
 

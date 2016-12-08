@@ -20,7 +20,7 @@
 		}
 		$entropia_gen = calcular_entropia($valclase);
 
-		array_push($arbol, array("NombreAtributo"=>$nombreA, "EntropiaGeneral"=>$entropia_gen));
+		array_push($arbol, array("NombreAtributo"=>$nombreA, "EntropiaGeneral"=>$entropia_gen, "Classes"=> $clase));
 
 		$sql = "DESC $nombreT;";
 		$i = 0;
@@ -39,16 +39,22 @@
 				$val_entropia_attr = [];
 				$val_suma_attr = [];
 				foreach ($conn->query($sql) as $row){
+					$sumatoriaClase = 0;
+					$clasePopular = "";
 					$valoresattr[$k] = $row[0];
 					for($j = 0; $j < $numclases; $j++){
 						$sql = "SELECT COUNT(*) FROM $nombreT WHERE $nombreA = '$clase[$j]' AND $atributos[$i] = '$row[0]';";
 						foreach ($conn->query($sql) as $row1){
+							if($row1[0] >= $sumatoriaClase) {
+								$sumatoriaClase = $row1[0];
+								$clasePopular = $clase[$j];
+							}
 							$valoresattrC[$j] = $row1[0];
 						}
 					}
 					$val_entropia_attr[$k] = calcular_entropia($valoresattrC);
 					$val_suma_attr[$k] = suma_valores($valoresattrC);
-					array_push($arrayAttr, array("atributo"=>$row[0], "entropia"=>$val_entropia_attr[$k]));
+					array_push($arrayAttr, array("atributo"=>$row[0], "entropia"=>$val_entropia_attr[$k], "answer"=>$clasePopular));
 					$k++;
 				}
 				$entropia_attr = calcular_entropia_attr($val_entropia_attr, $val_suma_attr, 14);
